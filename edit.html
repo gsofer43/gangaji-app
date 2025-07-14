@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>עריכת תרגול</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; padding: 40px; background: #f4f4f4; }
+    label, input, textarea { display: block; width: 100%; margin-bottom: 15px; }
+    textarea { height: 150px; }
+    button { padding: 10px 20px; background-color: #6aa6d6; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background-color: #4e8fc6; }
+  </style>
+</head>
+<body>
+  <h1>עריכת / הוספת תרגול</h1>
+  <form onsubmit="saveExercise(); return false;">
+    <label>שם התרגול:</label>
+    <input type="text" id="title" required>
+
+    <label>תוכן התרגול:</label>
+    <textarea id="content" required></textarea>
+
+    <button type="submit">💾 שמור</button>
+  </form>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    async function load() {
+      if (id) {
+        const res = await fetch('exercises.json');
+        const data = await res.json();
+        const ex = data.find(e => e.id == id);
+        if (ex) {
+          document.getElementById('title').value = ex.title;
+          document.getElementById('content').value = ex.content;
+        }
+      }
+    }
+    function saveExercise() {
+      alert('השמירה מתבצעת רק בהדמיה. בפועל נדרש שרת או Firebase.');
+    }
+    load();
+  </script>
+</body>
+</html>
